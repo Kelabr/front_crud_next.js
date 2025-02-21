@@ -11,6 +11,7 @@ export default function List(){
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
     const [create, setCreate] = useState(false)
+    const [search, setSearch] = useState("")
 
     useEffect(() => {
         async function getData(){
@@ -138,11 +139,18 @@ export default function List(){
         event.target.reset();
     }
 
+    const filteredUsers = user.filter((value) =>
+        value.name.toLowerCase().includes(search.toLowerCase()) ||
+        value.email.toLowerCase().includes(search.toLowerCase())
+    );
+
+
 
     return(
         <div className="mt-5">
             <div className="flex justify-end mb-5 flex-col">
-                <div className="flex justify-end">
+                <div className="flex justify-between">
+                    <input type="text" className="border-2 w-1/3 rounded-lg" value={search} onChange={(value) => setSearch(value.target.value) } />
                     <button className="bg-green-600 text-white p-2 rounded-lg w-24" onClick={() => showCreate()}>{create === false ? "+ Criar" : "Fechar"}</button>
                 </div>
                 {
@@ -162,8 +170,8 @@ export default function List(){
 
             </div>
             {
-                user.length > 0 ? 
-                    user.map((value) => {
+                filteredUsers.length > 0 ? 
+                    filteredUsers.map((value) => {
                         return(
                             <div key={value.id} className="mb-3">
                                 <div className="p-2 border-solid border-2 rounded-lg flex justify-between">
